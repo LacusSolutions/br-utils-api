@@ -1,12 +1,13 @@
 {
   "name": "@br-utils/api",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "author": {
     "name": "Julio L. Muller",
     "url": "https://github.com/juliolmuller"
   },
+  "type": "module",
   "scripts": {
     "prepare": "bun x husky",
     "commit": "commit",
