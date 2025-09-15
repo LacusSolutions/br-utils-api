@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "commit": "commit",
     "lint": "eslint --fix api/"
   },
   "dependencies": {
     "br-utils": "^2.0.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/prompt-cli": "^19.8.1",
     "@types/node": "^22.18.3",
     "@vercel/node": "^5.3.22",
     "eslint": "^9.35.0",
