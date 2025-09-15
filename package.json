@@ -1,10 +1,16 @@
 {
   "name": "@br-utils/api",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Julio L. Muller",
+    "url": "https://github.com/juliolmuller"
+  },
   "scripts": {
     "prepare": "bun x husky",
     "commit": "commit",
+    "release": "semantic-release",
     "lint": "eslint --fix api/"
   },
   "dependencies": {
@@ -14,6 +20,11 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@commitlint/prompt-cli": "^19.8.1",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/node": "^22.18.3",
     "@vercel/node": "^5.3.22",
     "eslint": "^9.35.0",
