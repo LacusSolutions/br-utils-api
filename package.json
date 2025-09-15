@@ -15,6 +15,7 @@
     "lint": "eslint --fix api/"
   },
   "dependencies": {
+    "@vercel/edge": "^1.2.2",
     "br-utils": "^2.0.3"
   },
   "devDependencies": {

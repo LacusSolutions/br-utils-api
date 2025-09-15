@@ -4,6 +4,7 @@
     "": {
       "name": "@br-utils/api",
       "dependencies": {
+        "@vercel/edge": "^1.2.2",
         "br-utils": "^2.0.3",
       },
       "devDependencies": {
@@ -12,7 +13,7 @@
         "@commitlint/prompt-cli": "^19.8.1",
         "@semantic-release/commit-analyzer": "^13.0.1",
         "@semantic-release/git": "^10.0.1",
-        "@semantic-release/github": "^11.0.5",
+        "@semantic-release/github": "^11.0.6",
         "@semantic-release/npm": "^12.0.2",
         "@semantic-release/release-notes-generator": "^14.1.0",
         "@types/node": "^22.18.3",
@@ -258,6 +259,8 @@
     "@typescript-eslint/visitor-keys": ["@typescript-eslint/visitor-keys@8.44.0", "", { "dependencies": { "@typescript-eslint/types": "8.44.0", "eslint-visitor-keys": "^4.2.1" } }, "sha512-zaz9u8EJ4GBmnehlrpoKvj/E3dNbuQ7q0ucyZImm3cLqJ8INTc970B1qEqDX/Rzq65r3TvVTN7kHWPBoyW7DWw=="],
 
     "@vercel/build-utils": ["@vercel/build-utils@12.1.0", "", {}, "sha512-yqpAh2KHm9iWUXo/aRWiLIxi8dMAwFtse2iZsg2QNEMs9W20va6L8PMFvdAa5MX9pgRwc38gbjD3V7drxSwq4g=="],
+
+    "@vercel/edge": ["@vercel/edge@1.2.2", "", {}, "sha512-1+y+f6rk0Yc9ss9bRDgz/gdpLimwoRteKHhrcgHvEpjbP1nyT3ByqEMWm2BTcpIO5UtDmIFXc8zdq4LR190PDA=="],
 
     "@vercel/error-utils": ["@vercel/error-utils@2.0.3", "", {}, "sha512-CqC01WZxbLUxoiVdh9B/poPbNpY9U+tO1N9oWHwTl5YAZxcqXmmWJ8KNMFItJCUUWdY3J3xv8LvAuQv2KZ5YdQ=="],
 
