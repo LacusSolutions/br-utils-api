@@ -1,14 +1,9 @@
 import { cpf as cpfUtils } from 'br-utils';
 
-interface GetParams {
-  params: Promise<{
-    cpf: string;
-  }>;
-}
-
-export async function GET(_: unknown, { params }: GetParams): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
   try {
-    const { cpf: cpfValue } = await params;
+    const { pathname } = new URL(request.url);
+    const cpfValue = pathname.split('/').at(-1) as string;
     const result = cpfUtils.isValid(cpfValue);
 
     return Response.json({ result }, { status: 200 });

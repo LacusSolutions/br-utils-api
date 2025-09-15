@@ -1,14 +1,9 @@
 import { cnpj as cnpjUtils } from 'br-utils';
 
-interface GetParams {
-  params: Promise<{
-    cnpj: string;
-  }>;
-}
-
-export async function GET(_: unknown, { params }: GetParams): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
   try {
-    const { cnpj: cnpjValue } = await params;
+    const { pathname } = new URL(request.url);
+    const cnpjValue = pathname.split('/').at(-1) as string;
     const result = cnpjUtils.isValid(cnpjValue);
 
     return Response.json({ result }, { status: 200 });

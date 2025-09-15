@@ -1,15 +1,9 @@
 import { cnpj as cnpjUtils } from 'br-utils';
 
-interface GetParams {
-  params: Promise<{
-    cnpj: string;
-  }>;
-}
-
-export async function GET(request: Request, { params }: GetParams): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
   try {
-    const { cnpj: cnpjValue } = await params;
-    const { searchParams } = new URL(request.url);
+    const { pathname, searchParams } = new URL(request.url);
+    const cnpjValue = pathname.split('/').at(-1) as string;
     const dotKey = searchParams.get('dot_key') ?? '.';
     const slashKey = searchParams.get('slash_key') ?? '/';
     const dashKey = searchParams.get('dash_key') ?? '-';
