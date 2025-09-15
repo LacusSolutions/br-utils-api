@@ -1,23 +1,17 @@
+import { type VercelRequest as Request } from '@vercel/node';
 import { cnpj as cnpjUtils } from 'br-utils';
 
-interface GetParams {
-  params: Promise<{
-    cnpj: string;
-  }>;
-}
-
-export async function GET(request: Request, { params }: GetParams): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
   try {
-    const { cnpj: cnpjValue } = await params;
-    const { searchParams } = new URL(request.url);
-    const dotKey = searchParams.get('dot_key') ?? '.';
-    const slashKey = searchParams.get('slash_key') ?? '/';
-    const dashKey = searchParams.get('dash_key') ?? '-';
-    const escape = searchParams.get('escape') === 'true';
-    const hidden = searchParams.get('hidden') === 'true';
-    const hiddenKey = searchParams.get('hidden_key') ?? '*';
-    const hiddenStart = searchParams.get('hidden_start') || '5';
-    const hiddenEnd = searchParams.get('hidden_end') || '13';
+    const cnpjValue = request.query.cnpj.toString();
+    const dotKey = request.query.dot_key?.toString() ?? '.';
+    const slashKey = request.query.slash_key?.toString() ?? '/';
+    const dashKey = request.query.dash_key?.toString() ?? '-';
+    const escape = request.query.escape?.toString() === 'true';
+    const hidden = request.query.hidden?.toString() === 'true';
+    const hiddenKey = request.query.hidden_key?.toString() ?? '*';
+    const hiddenStart = request.query.hidden_start?.toString() || '5';
+    const hiddenEnd = request.query.hidden_end?.toString() || '13';
     const result = cnpjUtils.format(cnpjValue, {
       delimiters: {
         dot: dotKey,

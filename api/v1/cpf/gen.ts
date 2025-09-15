@@ -1,10 +1,10 @@
+import { type VercelRequest as Request } from '@vercel/node';
 import { cpf as cpfUtils } from 'br-utils';
 
 export async function GET(request: Request): Promise<Response> {
   try {
-    const { searchParams } = new URL(request.url);
-    const prefix = searchParams.get('prefix') || undefined;
-    const format = searchParams.get('format') === 'true';
+    const prefix = request.query.prefix?.toString() || undefined;
+    const format = request.query.format?.toString() === 'true';
     const result = cpfUtils.generate({
       prefix,
       format,
