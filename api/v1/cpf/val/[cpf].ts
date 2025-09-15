@@ -1,9 +1,14 @@
-import { type VercelRequest as Request } from '@vercel/node';
 import { cpf as cpfUtils } from 'br-utils';
 
-export async function GET(request: Request): Promise<Response> {
+interface GetParams {
+  params: Promise<{
+    cpf: string;
+  }>;
+}
+
+export async function GET(_: unknown, { params }: GetParams): Promise<Response> {
   try {
-    const cpfValue = request.query.cpf.toString();
+    const { cpf: cpfValue } = await params;
     const result = cpfUtils.isValid(cpfValue);
 
     return Response.json({ result }, { status: 200 });

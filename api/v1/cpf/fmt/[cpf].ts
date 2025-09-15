@@ -1,16 +1,22 @@
-import { type VercelRequest as Request } from '@vercel/node';
 import { cpf as cpfUtils } from 'br-utils';
 
-export async function GET(request: Request): Promise<Response> {
+interface GetParams {
+  params: Promise<{
+    cpf: string;
+  }>;
+}
+
+export async function GET(request: Request, { params }: GetParams): Promise<Response> {
   try {
-    const cpfValue = request.query.cpf.toString();
-    const dotKey = request.query.dot_key?.toString() ?? '.';
-    const dashKey = request.query.dash_key?.toString() ?? '-';
-    const escape = request.query.escape?.toString() === 'true';
-    const hidden = request.query.hidden?.toString() === 'true';
-    const hiddenKey = request.query.hidden_key?.toString() ?? '*';
-    const hiddenStart = request.query.hidden_start?.toString() ?? '3';
-    const hiddenEnd = request.query.hidden_end?.toString() ?? '10';
+    const { cpf: cpfValue } = await params;
+    const { searchParams } = new URL(request.url);
+    const dotKey = searchParams.get('dot_key') ?? '.';
+    const dashKey = searchParams.get('dash_key') ?? '-';
+    const escape = searchParams.get('escape') === 'true';
+    const hidden = searchParams.get('hidden') === 'true';
+    const hiddenKey = searchParams.get('hidden_key') ?? '*';
+    const hiddenStart = searchParams.get('hidden_start') ?? '3';
+    const hiddenEnd = searchParams.get('hidden_end') ?? '10';
     const result = cpfUtils.format(cpfValue, {
       delimiters: {
         dot: dotKey,

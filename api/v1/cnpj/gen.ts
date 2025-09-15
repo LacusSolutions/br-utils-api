@@ -1,10 +1,10 @@
-import { type VercelRequest as Request } from '@vercel/node';
 import { cnpj as cnpjUtils } from 'br-utils';
 
 export async function GET(request: Request): Promise<Response> {
   try {
-    const prefix = request.query.prefix?.toString() || undefined;
-    const format = request.query.format?.toString() === 'true';
+    const { searchParams } = new URL(request.url);
+    const prefix = searchParams.get('prefix') || undefined;
+    const format = searchParams.get('format') === 'true';
     const result = cnpjUtils.generate({
       prefix,
       format,
