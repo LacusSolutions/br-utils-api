@@ -16,11 +16,8 @@ export async function GET(request: Request): Promise<Response> {
 
     return Response.json({ result }, { status: 200 });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('💩', error);
-
-    if (error instanceof TypeError) {
-      return Response.json({ error: error.message }, { status: 422 });
+    if (error instanceof Response) {
+      return error;
     }
 
     return Response.json({ error: 'Unable to generate CNPJ.' }, { status: 500 });

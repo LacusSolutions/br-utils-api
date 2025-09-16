@@ -12,9 +12,6 @@ export async function GET(request: Request): Promise<Response> {
 
     return Response.json({ result }, { status: 200 });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('💩', error);
-
     if (error instanceof Response) {
       return error;
     }
