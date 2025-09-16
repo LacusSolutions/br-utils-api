@@ -1,9 +1,9 @@
-type Middleware = (request: Request) => Promise<undefined>;
+type Middleware = (request: Request) => Promise<void>;
 
 export async function middlewareChain(
   request: Request,
   ...middlewares: Middleware[]
-): ReturnType<Middleware> {
+): Promise<void> {
   for (const middleware of middlewares) {
     await middleware(request);
   }
