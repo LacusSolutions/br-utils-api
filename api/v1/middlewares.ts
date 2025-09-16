@@ -12,10 +12,7 @@ export async function middlewareChain(
 export function auth(): Middleware {
   return async (request) => {
     const authHeader = request.headers.get('authorization');
-    const token = authHeader?.split('Bearer ', 1).at(1);
-
-    console.log('💩', authHeader); // eslint-disable-line no-console
-    console.log('💩', token); // eslint-disable-line no-console
+    const token = authHeader?.split('Bearer ', 2).at(1);
 
     if (!token) {
       throw Response.json({ error: 'Unauthorized' }, { status: 401 });
