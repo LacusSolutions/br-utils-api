@@ -1,6 +1,6 @@
 import { cpf as cpfUtils } from 'br-utils';
 
-import { auth, middlewareChain } from '~/v1/middlewares';
+import { auth, middlewareChain } from '../middlewares';
 
 export async function GET(request: Request): Promise<Response> {
   try {

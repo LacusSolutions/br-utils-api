@@ -11,10 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
-    "paths": {
-      "~/*": ["./api/*"]
-    }
+    "incremental": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules/"]
