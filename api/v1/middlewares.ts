@@ -14,6 +14,9 @@ export function auth(): Middleware {
     const authHeader = request.headers.get('authorization');
     const token = authHeader?.split('Bearer ', 1).at(1);
 
+    console.log('💩', authHeader); // eslint-disable-line no-console
+    console.log('💩', token); // eslint-disable-line no-console
+
     if (!token) {
       throw Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
