@@ -1,7 +1,11 @@
 import { cnpj as cnpjUtils } from 'br-utils';
 
+import { auth, middlewareChain } from '~/v1/middlewares';
+
 export async function GET(request: Request): Promise<Response> {
   try {
+    await middlewareChain(request, auth());
+
     const { pathname, searchParams } = new URL(request.url);
     const cnpjValue = pathname.split('/').at(-1) as string;
     const dotKey = searchParams.get('dot_key') ?? '.';

@@ -1,7 +1,11 @@
 import { cnpj as cnpjUtils } from 'br-utils';
 
+import { auth, middlewareChain } from '~/v1/middlewares';
+
 export async function GET(request: Request): Promise<Response> {
   try {
+    await middlewareChain(request, auth());
+
     const { searchParams } = new URL(request.url);
     const prefix = searchParams.get('prefix') || undefined;
     const format = searchParams.get('format') === 'true';
