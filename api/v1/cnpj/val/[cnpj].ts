@@ -11,7 +11,14 @@ export async function GET(request: Request): Promise<Response> {
     const result = cnpjUtils.isValid(cnpjValue);
 
     return Response.json({ result }, { status: 200 });
-  } catch {
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('💩', error);
+
+    if (error instanceof Response) {
+      return error;
+    }
+
     return Response.json({ error: 'Unable to validate CNPJ.' }, { status: 500 });
   }
 }
