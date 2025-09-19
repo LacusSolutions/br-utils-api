@@ -7,7 +7,8 @@ export async function GET(request: Request): Promise<Response> {
     await middlewareChain(request, auth());
 
     const { pathname, searchParams } = new URL(request.url);
-    const cpfValue = pathname.split('/').at(-1) as string;
+    const rawCpfValue = pathname.split('/').at(-1) as string;
+    const cpfValue = decodeURIComponent(rawCpfValue);
     const dotKey = searchParams.get('dot_key') ?? '.';
     const dashKey = searchParams.get('dash_key') ?? '-';
     const escape = searchParams.get('escape') === 'true';

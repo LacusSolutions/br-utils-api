@@ -7,7 +7,8 @@ export async function GET(request: Request): Promise<Response> {
     await middlewareChain(request, auth());
 
     const { pathname, searchParams } = new URL(request.url);
-    const cnpjValue = pathname.split('/').at(-1) as string;
+    const rawCnpjValue = pathname.split('/').at(-1) as string;
+    const cnpjValue = decodeURIComponent(rawCnpjValue);
     const dotKey = searchParams.get('dot_key') ?? '.';
     const slashKey = searchParams.get('slash_key') ?? '/';
     const dashKey = searchParams.get('dash_key') ?? '-';
