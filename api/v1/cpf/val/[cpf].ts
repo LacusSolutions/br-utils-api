@@ -7,7 +7,8 @@ export async function GET(request: Request): Promise<Response> {
     await middlewareChain(request, auth());
 
     const { pathname } = new URL(request.url);
-    const cpfValue = pathname.split('/').at(-1) as string;
+    const rawCpfValue = pathname.split('/').at(-1) as string;
+    const cpfValue = decodeURIComponent(rawCpfValue);
     const result = cpfUtils.isValid(cpfValue);
 
     return Response.json({ result }, { status: 200 });

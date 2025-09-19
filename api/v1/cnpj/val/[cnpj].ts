@@ -7,7 +7,8 @@ export async function GET(request: Request): Promise<Response> {
     await middlewareChain(request, auth());
 
     const { pathname } = new URL(request.url);
-    const cnpjValue = pathname.split('/').at(-1) as string;
+    const rawCnpjValue = pathname.split('/').at(-1) as string;
+    const cnpjValue = decodeURIComponent(rawCnpjValue);
     const result = cnpjUtils.isValid(cnpjValue);
 
     return Response.json({ result }, { status: 200 });
