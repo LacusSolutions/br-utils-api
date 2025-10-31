@@ -1,0 +1,477 @@
+openapi: 3.0.3
+info:
+
+  title: BR Utils API
+  version: v1
+  contact:
+    name: Julio L. Muller
+    url: https://github.com/juliolmuller
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://br-utils-api.vercel.app
+    description: Production server
+  - url: http://localhost:3000
+    description: Local development server
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: CPF
+    description: Operations related to CPF (Individual Taxpayer Registry)
+  - name: CNPJ
+    description: Operations related to CNPJ (National Registry of Legal Entities)
+
+paths:
+  /api/v1/cpf/gen:
+    get:
+      summary: Generate CPF
+      description: |
+        Generates a random valid CPF.
+
+        **Optional parameters:**
+        - `prefix`: Prefix for the CPF (maximum 9 digits)
+        - `format`: Whether to return formatted (true/false)
+      operationId: generateCpf
+      tags:
+        - CPF
+      parameters:
+        - name: prefix
+          in: query
+          description: Prefix for the CPF (maximum 9 digits)
+          required: false
+          schema:
+            type: string
+            pattern: '^[0-9]{1,9}$'
+            example: "123456789"
+        - name: format
+          in: query
+          description: Whether to return the CPF formatted
+          required: false
+          schema:
+            type: boolean
+            default: false
+            example: true
+      responses:
+        '200':
+          description: CPF generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: Generated CPF
+                    example: "12345678901"
+                required:
+                  - result
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/cpf/val/{cpf}:
+    get:
+      summary: Validate CPF
+      description: |
+        Validates if a CPF is valid according to the official Brazilian algorithm.
+
+        The CPF can be provided with or without formatting.
+      operationId: validateCpf
+      tags:
+        - CPF
+      parameters:
+        - name: cpf
+          in: path
+          description: CPF to be validated
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9]{11}$|^[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}$'
+            example: "12345678901"
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: boolean
+                    description: true if the CPF is valid, false otherwise
+                    example: true
+                required:
+                  - result
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/cpf/fmt/{cpf}:
+    get:
+      summary: Format CPF
+      description: |
+        Formats a CPF with customizable formatting options.
+
+        **Formatting options:**
+        - Customizable delimiters (dot, dash)
+        - Special character escaping
+        - Digit hiding with custom character
+        - Range of digits to hide
+      operationId: formatCpf
+      tags:
+        - CPF
+      parameters:
+        - name: cpf
+          in: path
+          description: CPF to be formatted
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9]{11}$|^[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}$'
+            example: "12345678901"
+        - name: dot_key
+          in: query
+          description: Character to separate the first 3 digits
+          required: false
+          schema:
+            type: string
+            default: "."
+            example: "."
+        - name: dash_key
+          in: query
+          description: Character to separate the last 2 digits
+          required: false
+          schema:
+            type: string
+            default: "-"
+            example: "-"
+        - name: escape
+          in: query
+          description: Whether to escape special characters
+          required: false
+          schema:
+            type: boolean
+            default: false
+            example: false
+        - name: hidden
+          in: query
+          description: Whether to hide part of the CPF
+          required: false
+          schema:
+            type: boolean
+            default: false
+            example: true
+        - name: hidden_key
+          in: query
+          description: Character to hide digits
+          required: false
+          schema:
+            type: string
+            default: "*"
+            example: "*"
+        - name: hidden_start
+          in: query
+          description: Initial position to hide (0-indexed)
+          required: false
+          schema:
+            type: string
+            default: "3"
+            example: "3"
+        - name: hidden_end
+          in: query
+          description: Final position to hide (0-indexed)
+          required: false
+          schema:
+            type: string
+            default: "10"
+            example: "10"
+      responses:
+        '200':
+          description: CPF formatted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: Formatted CPF
+                    example: "123.456.789-01"
+                required:
+                  - result
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: Validation error - Invalid CPF
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid CPF format"
+                required:
+                  - error
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/cnpj/gen:
+    get:
+      summary: Generate CNPJ
+      description: |
+        Generates a random valid CNPJ.
+
+        **Optional parameters:**
+        - `prefix`: Prefix for the CNPJ (maximum 12 digits)
+        - `format`: Whether to return formatted (true/false)
+      operationId: generateCnpj
+      tags:
+        - CNPJ
+      parameters:
+        - name: prefix
+          in: query
+          description: Prefix for the CNPJ (maximum 12 digits)
+          required: false
+          schema:
+            type: string
+            pattern: '^[0-9]{1,12}$'
+            example: "123456780001"
+        - name: format
+          in: query
+          description: Whether to return the CNPJ formatted
+          required: false
+          schema:
+            type: boolean
+            default: false
+            example: true
+      responses:
+        '200':
+          description: CNPJ generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: Generated CNPJ
+                    example: "12345678000195"
+                required:
+                  - result
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/cnpj/val/{cnpj}:
+    get:
+      summary: Validate CNPJ
+      description: |
+        Validates if a CNPJ is valid according to the official Brazilian algorithm.
+
+        The CNPJ can be provided with or without formatting.
+      operationId: validateCnpj
+      tags:
+        - CNPJ
+      parameters:
+        - name: cnpj
+          in: path
+          description: CNPJ to be validated
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9]{14}$|^[0-9]{2}\.[0-9]{3}\.[0-9]{3}/[0-9]{4}-[0-9]{2}$'
+            example: "12345678000195"
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: boolean
+                    description: true if the CNPJ is valid, false otherwise
+                    example: true
+                required:
+                  - result
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/cnpj/fmt/{cnpj}:
+    get:
+      summary: Format CNPJ
+      description: |
+        Formats a CNPJ with customizable formatting options.
+
+        **Formatting options:**
+        - Customizable delimiters (dot, slash, dash)
+        - Special character escaping
+        - Digit hiding with custom character
+        - Range of digits to hide
+      operationId: formatCnpj
+      tags:
+        - CNPJ
+      parameters:
+        - name: cnpj
+          in: path
+          description: CNPJ to be formatted
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9]{14}$|^[0-9]{2}\.[0-9]{3}\.[0-9]{3}/[0-9]{4}-[0-9]{2}$'
+            example: "12345678000195"
+        - name: dot_key
+          in: query
+          description: Character to separate the first 2 digits
+          required: false
+          schema:
+            type: string
+            default: "."
+            example: "."
+        - name: slash_key
+          in: query
+          description: Character to separate the middle block
+          required: false
+          schema:
+            type: string
+            default: "/"
+            example: "/"
+        - name: dash_key
+          in: query
+          description: Character to separate the last 2 digits
+          required: false
+          schema:
+            type: string
+            default: "-"
+            example: "-"
+        - name: escape
+          in: query
+          description: Whether to escape special characters
+          required: false
+          schema:
+            type: boolean
+            default: false
+            example: false
+        - name: hidden
+          in: query
+          description: Whether to hide part of the CNPJ
+          required: false
+          schema:
+            type: boolean
+            default: false
+            example: true
+        - name: hidden_key
+          in: query
+          description: Character to hide digits
+          required: false
+          schema:
+            type: string
+            default: "*"
+            example: "*"
+        - name: hidden_start
+          in: query
+          description: Initial position to hide (0-indexed)
+          required: false
+          schema:
+            type: string
+            default: "5"
+            example: "5"
+        - name: hidden_end
+          in: query
+          description: Final position to hide (0-indexed)
+          required: false
+          schema:
+            type: string
+            default: "13"
+            example: "13"
+      responses:
+        '200':
+          description: CNPJ formatted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: Formatted CNPJ
+                    example: "12.345.678/0001-95"
+                required:
+                  - result
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Authentication token. Configure the `API_TOKEN` environment variable
+        and include the token in the `Authorization: Bearer <token>` header.
+
+  responses:
+    Unauthorized:
+      description: Authentication token not provided
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Unauthorized"
+            required:
+              - error
+
+    Forbidden:
+      description: Invalid authentication token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Forbidden"
+            required:
+              - error
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Unable to process request"
+            required:
+              - error
