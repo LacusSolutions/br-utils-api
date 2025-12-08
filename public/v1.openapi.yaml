@@ -1,6 +1,6 @@
 openapi: 3.0.3
-info:
 
+info:
   title: BR Utils API
   version: v1
   contact:
