@@ -9,30 +9,31 @@
   },
   "type": "module",
   "scripts": {
-    "prepare": "bun x husky",
+    "prepare": "husky",
     "commit": "commit",
     "release": "semantic-release",
-    "lint": "eslint --fix api/"
+    "lint": "eslint api/"
   },
   "dependencies": {
-    "br-utils": "^2.0.3"
+    "br-utils": "^2.0.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@commitlint/prompt-cli": "^19.8.1",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@commitlint/prompt-cli": "^21.2.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.6",
-    "@semantic-release/npm": "^12.0.2",
-    "@semantic-release/release-notes-generator": "^14.1.0",
-    "@types/node": "^22.18.3",
-    "@vercel/node": "^5.3.22",
-    "eslint": "^9.35.0",
-    "eslint-config-any": "^2.2.1",
+    "@semantic-release/git": "^11.0.1",
+    "@semantic-release/github": "^12.0.10",
+    "@semantic-release/npm": "^13.2.0",
+    "@semantic-release/release-notes-generator": "^14.1.1",
+    "@types/node": "^24.19.2",
+    "@vercel/node": "^23.0.0",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "eslint": "^9.39.5",
+    "eslint-config-any": "^2.5.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.2"
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "typescript": "~6.0.3"
   }
 }
